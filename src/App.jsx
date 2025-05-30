@@ -1,8 +1,10 @@
-import React from 'react'
+import List from '@/components/List'
 
-const App = () => {
+function App() {
   return (
-    <div>App</div>
+    <div className="relative container mx-auto">
+      <List />
+    </div>
   )
 }
 
