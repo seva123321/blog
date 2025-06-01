@@ -1,59 +1,48 @@
-import Tags from '@/components/Tags'
+import { Link } from 'react-router-dom'
 
-function Item({ item }) {
+import Tags from '@/components/Tags'
+import AvaComponent from '@/components/AvaComponent'
+import { getDateString } from '@/services/utils'
+
+function Item({ item, isShadow = false }) {
   const {
+    slug,
     author,
-    // body,
     createdAt,
     description,
-    // favorited,
     favoritesCount,
-    // slug,
     tagList,
     title,
     updatedAt,
   } = item
 
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }
-
-  const dateArticle = updatedAt || createdAt
-  const createdAtDate = new Date(dateArticle).toLocaleDateString(
-    'en-En',
-    options,
-  )
-
   return (
-    <li className="mb-6.5 flex min-h-35 justify-between bg-white px-5 py-4 shadow">
-      <div className="">
-        <div className="flex items-center">
-          <span className="mb-1.5 text-[26px] text-[#1890FF]">{title}</span>
-          <div className="ml-3.5 flex items-center">
-            <img className="w-4.5" src="/icons/heart.svg" alt="likes" />
-            <span className="ml-1">{favoritesCount}</span>
+    <div
+      className={`flex flex-col bg-white p-4 ${isShadow && 'shadow-md'} sm:flex-row sm:justify-between sm:p-5`}
+    >
+      <div className="mb-4 sm:mr-4 sm:mb-0 sm:flex-1">
+        <div className="flex items-center sm:flex-row">
+          <Link
+            to={`/articles/${slug}`}
+            className="mb-2 text-xl font-semibold text-blue-600 sm:mb-0 sm:text-2xl"
+          >
+            {title}
+          </Link>
+          <div className="mb-3 ml-1 flex sm:mb-0 sm:ml-3">
+            <img className="w-4" src="/icons/heart.svg" alt="likes" />
+            <span className="ml-1 text-gray-600">{favoritesCount}</span>
           </div>
         </div>
 
         <Tags tagList={tagList} />
-        <p>{description}</p>
+        <p className="text-gray-700">{description}</p>
       </div>
-      <div className="flex">
-        <div className="flex flex-col">
-          <span className="text-lg">{author.username}</span>
-          <span className="text-3 text-gray-400">{createdAtDate}</span>
-        </div>
-        <img
-          src={author.image}
-          // eslint-disable-next-line no-return-assign
-          onError={(e) => (e.currentTarget.src = '/icons/FallbackAvatar.jpg')}
-          className="ml-3 h-12 w-12 rounded-full"
-          alt="avatar"
-        />
-      </div>
-    </li>
+      <AvaComponent
+        username={author.username}
+        date={getDateString(updatedAt, createdAt)}
+        urlImg={author.image}
+      />
+    </div>
   )
 }
 
