@@ -4,7 +4,8 @@ const ROUTES = {
   SIGN_IN: '/sign-in',
   ARTICLES: '/articles',
   ARTICLE: '/articles/:slug',
-  CREATE_ARTICLE: '/create-article',
+  ARTICLE_EDIT: '/articles/:slug/edit',
+  CREATE_ARTICLE: '/new-article',
   PROFILE: '/profile',
   // EDIT_ARTICLE: '/edit_article/:slug?',
 }
