@@ -2,21 +2,27 @@ import { Route, Routes } from 'react-router-dom'
 
 import ArticlesPage from '@/pages/ArticlesPage'
 import OneArticlePage from '@/pages/OneArticlePage'
-import RegPage from '@/pages/RegPage'
+// import RegPage from '@/pages/RegPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import EditForm from '@/pages/EditForm'
 import Layout from '@/models/Layout'
+import ROUTES from '@/services/routes'
+import SignUpForm from '@/pages/SignUpForm'
+import SignInForm from '@/pages/SignInForm'
+import ProfileForm from '@/pages/ProfileForm'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path={ROUTES.HOME} element={<Layout />}>
         <Route index element={<ArticlesPage />} />
-        <Route path="articles" element={<ArticlesPage />} />
-        <Route path="articles/:slug" element={<OneArticlePage />} />
-        <Route path="sign_up" element={<RegPage />} />
-        <Route path="sign_in" element={<RegPage />} />
-        <Route path="create_article" element={<EditForm />} />
+        <Route path={ROUTES.ARTICLES} element={<ArticlesPage />} />
+        <Route path={ROUTES.ARTICLE} element={<OneArticlePage />} />
+        <Route path={ROUTES.ARTICLE_EDIT} element={<EditForm />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUpForm />} />
+        <Route path={ROUTES.SIGN_IN} element={<SignInForm />} />
+        <Route path={ROUTES.PROFILE} element={<ProfileForm />} />
+        <Route path={ROUTES.CREATE_ARTICLE} element={<EditForm />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
