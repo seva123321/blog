@@ -6,52 +6,23 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import Input from '@/components/Input'
 import ROUTES from '@/services/routes'
-import { SignUpSchema } from '@/services/validationSchemas'
-import { usePostUserRegisterMutation } from '@/redux'
+import { SignInSchema } from '@/services/validationSchemas'
+import { usePostUserLoginMutation } from '@/redux'
 
-function SignUpForm() {
+function SignInForm() {
   const {
+    // reset,
     register,
     handleSubmit,
-    // reset,
     formState: { errors },
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {},
-    resolver: yupResolver(SignUpSchema),
-  })
+  } = useForm({ resolver: yupResolver(SignInSchema) })
   const [serverErrors, setServerErrors] = useState(null)
 
-  const [registerUser, { isError }] = usePostUserRegisterMutation()
+  const [loginUser, { isError }] = usePostUserLoginMutation()
 
   const submitForm = async (data) => {
-    const { username, email, password } = data
-    const dataPrepared = {
-      user: {
-        username,
-        email,
-        password,
-      },
-    }
-
-    // {
-    //     "agreement": true,
-    //     "repeatPassword": "111111",
-    //     "password": "111111",
-    //     "email": "ddd@mail.ru",
-    //     "username": "qwerty"
-    // }
-
-    // {
-    //   "user": {
-    //     "username": "string",
-    //     "email": "string",
-    //     "password": "string"
-    //   }
-    // }
-
     try {
-      const result = await registerUser(dataPrepared)
+      const result = await loginUser(data)
       if (isError) setServerErrors(result.error)
       // reset({})
     } catch (err) {
@@ -66,18 +37,7 @@ function SignUpForm() {
         action=""
         onSubmit={handleSubmit(submitForm)}
       >
-        <span className="block text-center text-2xl">Create new account</span>
-
-        <Input
-          type="text"
-          label="Username"
-          autoComplete
-          error={
-            serverErrors?.data.errors?.username || errors.username?.message
-          }
-          {...register('username')}
-        />
-
+        <span className="block text-center text-2xl">Sign In</span>
         <Input
           type="email"
           label="Email address"
@@ -85,45 +45,28 @@ function SignUpForm() {
           {...register('email')}
           error={serverErrors?.data.errors?.email || errors.email?.message}
         />
-
         <Input
           type="password"
-          {...register('password')}
           error={
             serverErrors?.data.errors?.password || errors.password?.message
           }
-        />
-        <Input
-          type="password"
-          label="Repeat Password"
-          {...register('repeatPassword')}
-          error={errors.repeatPassword?.message}
-        />
-        <hr className="border-0.5 border-[#BFBFBF]" />
-
-        <Input
-          {...register('agreement')}
-          type="checkbox"
-          value
-          label="I agree to the processing of my personal information"
-          error={errors.agreement?.message}
+          {...register('password')}
         />
 
         <button
           type="submit"
           className="mt-3 mb-2 w-full cursor-pointer rounded-md bg-[#1890FF] px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
         >
-          Create
+          Login
         </button>
 
         <span className="flex justify-center text-xs text-[#8C8C8C]">
-          Already have an account?&nbsp;
-          <Link to={ROUTES.SIGN_IN} className="text-[#1890FF] hover:underline">
-            Sign In.
+          Don’t have an account?&nbsp;
+          <Link to={ROUTES.SIGN_UP} className="text-[#1890FF] hover:underline">
+            Sign Up.
           </Link>
         </span>
       </form>
-
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
@@ -139,4 +82,4 @@ function SignUpForm() {
     </section>
   )
 }
-export default SignUpForm
+export default SignInForm
