@@ -23,7 +23,7 @@ function List() {
   if (!data.articles.length) return <h1>No articles found</h1>
 
   return (
-    <>
+    <section>
       <ul>
         {data.articles.map((item) => (
           <li className="mb-6" key={item.slug}>
@@ -36,7 +36,7 @@ function List() {
         onPageChange={setPage}
         totalPages={Math.ceil(data.articlesCount / PAGINATION_LIMIT)}
       />
-    </>
+    </section>
   )
 }
 

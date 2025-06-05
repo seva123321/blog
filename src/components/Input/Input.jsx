@@ -36,7 +36,7 @@ const Input = forwardRef(
           type={type}
           name={name}
           placeholder={getUpperCaseStartedWord(name)}
-          className={`rounded-lg border border-gray-300 p-3 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''} ${isCheckboxOrRadio ? 'h-5 w-5 cursor-pointer accent-blue-600' : ''} ${props.disabled ? 'cursor-not-allowed bg-gray-100 opacity-70' : ''} `}
+          className={`rounded-lg border border-gray-300 p-3 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-200' : ''} ${isCheckboxOrRadio ? 'h-5 w-5 cursor-pointer accent-blue-600' : ''} ${props.disabled ? 'cursor-not-allowed bg-gray-100 opacity-70' : ''} `}
           {...props}
         />
         {!isCheckboxOrRadio && error && (

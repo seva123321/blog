@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-function Tags({ tagList }) {
+function Tags({ tagList = [] }) {
   const [showAll, setShowAll] = useState(false)
   const visibleTags = showAll ? tagList : tagList.slice(0, 2)
   const hiddenTagsCount = tagList.length - 2
@@ -29,4 +29,4 @@ function Tags({ tagList }) {
   )
 }
 
-export default Tags
+export default memo(Tags)
