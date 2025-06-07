@@ -7,7 +7,7 @@ function Layout() {
     <>
       <Header />
 
-      <main className="container mx-auto mt-24">
+      <main className="container mx-auto mt-24 border-[0.001px] border-transparent">
         <Outlet />
       </main>
     </>

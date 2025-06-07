@@ -2,7 +2,9 @@ import { memo } from 'react'
 
 function AvaComponent({ username = '', date = '', urlImg = '' }) {
   return (
-    <div className={`flex ${date ? 'items-start' : 'items-center'}`}>
+    <div
+      className={`flex ${date ? 'items-start' : 'items-center'} justify-end`}
+    >
       <div className="mr-3 flex flex-col">
         <span className="text-sm font-medium sm:text-base">{username}</span>
         <span className="text-xs text-gray-400 sm:text-sm">{date}</span>
