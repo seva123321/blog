@@ -1,19 +1,19 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast, ToastContainer } from 'react-toastify'
 import { yupResolver } from '@hookform/resolvers/yup'
 
+import { useRegisterMutation, saveUser } from '@/redux'
 import Input from '@/components/Input'
 import ROUTES from '@/services/routes'
 import { SignUpSchema } from '@/services/validationSchemas'
-import { usePostUserRegisterMutation } from '@/redux'
 
 function SignUpForm() {
   const {
     register,
     handleSubmit,
-    // reset,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
@@ -21,39 +21,22 @@ function SignUpForm() {
     resolver: yupResolver(SignUpSchema),
   })
   const [serverErrors, setServerErrors] = useState(null)
-
-  const [registerUser, { isError }] = usePostUserRegisterMutation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [registerUser, { isError, error }] = useRegisterMutation()
 
   const submitForm = async (data) => {
-    const { username, email, password } = data
-    const dataPrepared = {
-      user: {
-        username,
-        email,
-        password,
-      },
-    }
-
-    // {
-    //     "agreement": true,
-    //     "repeatPassword": "111111",
-    //     "password": "111111",
-    //     "email": "ddd@mail.ru",
-    //     "username": "qwerty"
-    // }
-
-    // {
-    //   "user": {
-    //     "username": "string",
-    //     "email": "string",
-    //     "password": "string"
-    //   }
-    // }
-
     try {
-      const result = await registerUser(dataPrepared)
+      const result = await registerUser(data).unwrap()
       if (isError) setServerErrors(result.error)
-      // reset({})
+      if (error) {
+        toast.error(error.data.errors.message)
+        return
+      }
+      if (result.user) {
+        dispatch(saveUser(result.user))
+      }
+      navigate(ROUTES.HOME)
     } catch (err) {
       toast.error(`Ошибка: ${err}`)
     }
@@ -63,7 +46,6 @@ function SignUpForm() {
     <section>
       <form
         className="mx-auto max-w-sm space-y-4 bg-white px-8 py-12 shadow-2xl"
-        action=""
         onSubmit={handleSubmit(submitForm)}
       >
         <span className="block text-center text-2xl">Create new account</span>
@@ -71,7 +53,7 @@ function SignUpForm() {
         <Input
           type="text"
           label="Username"
-          autoComplete
+          autoComplete="username"
           error={
             serverErrors?.data.errors?.username || errors.username?.message
           }
@@ -81,30 +63,36 @@ function SignUpForm() {
         <Input
           type="email"
           label="Email address"
-          autoComplete
+          autoComplete="email"
           {...register('email')}
           error={serverErrors?.data.errors?.email || errors.email?.message}
         />
 
         <Input
           type="password"
+          label="Password"
+          autoComplete="new-password"
           {...register('password')}
           error={
             serverErrors?.data.errors?.password || errors.password?.message
           }
         />
+
         <Input
           type="password"
           label="Repeat Password"
+          autoComplete="new-password"
           {...register('repeatPassword')}
           error={errors.repeatPassword?.message}
         />
+
         <hr className="border-0.5 border-[#BFBFBF]" />
 
         <Input
           {...register('agreement')}
           type="checkbox"
           value
+          autoComplete="off"
           label="I agree to the processing of my personal information"
           error={errors.agreement?.message}
         />

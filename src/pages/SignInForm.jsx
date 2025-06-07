@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast, ToastContainer } from 'react-toastify'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useDispatch } from 'react-redux'
 
 import Input from '@/components/Input'
 import ROUTES from '@/services/routes'
 import { SignInSchema } from '@/services/validationSchemas'
-import { usePostUserLoginMutation } from '@/redux'
+import { useLoginMutation, saveUser } from '@/redux'
 
 function SignInForm() {
   const {
@@ -17,16 +18,33 @@ function SignInForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(SignInSchema) })
   const [serverErrors, setServerErrors] = useState(null)
-
-  const [loginUser, { isError }] = usePostUserLoginMutation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [loginUser, { isError, error }] = useLoginMutation()
+  // const location = useLocation()
+  // console.log('location > ', location)
+  // const fromPage = location.state.from || '/'
 
   const submitForm = async (data) => {
     try {
-      const result = await loginUser(data)
-      if (isError) setServerErrors(result.error)
-      // reset({})
+      const result = await loginUser(data).unwrap()
+      if (isError) {
+        setServerErrors(result.error)
+        // return
+      }
+      if (error) {
+        toast.error(error.data.errors)
+        return
+      }
+
+      if (result.user) {
+        dispatch(saveUser(result.user))
+      }
+      navigate(ROUTES.HOME)
     } catch (err) {
-      toast.error(`Ошибка: ${err}`)
+      const message = Object.entries(err.data.errors)
+      toast.error(`Ошибка: ${message.join('')}`)
+      // toast.error(`Ошибка: ${err.data.errors}`)
     }
   }
 
@@ -41,12 +59,13 @@ function SignInForm() {
         <Input
           type="email"
           label="Email address"
-          autoComplete
+          autoComplete="email"
           {...register('email')}
           error={serverErrors?.data.errors?.email || errors.email?.message}
         />
         <Input
           type="password"
+          autoComplete="password"
           error={
             serverErrors?.data.errors?.password || errors.password?.message
           }
