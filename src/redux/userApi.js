@@ -12,21 +12,21 @@ const userApi = createApi({
     },
   }),
   endpoints: (build) => ({
-    postUserRegister: build.mutation({
+    register: build.mutation({
       query: (body) => ({
         url: '',
         method: 'POST',
-        body,
+        body: { user: { ...body } },
         // headers: {
         //   'Custom-Header': 'value',
         // },
       }),
     }),
-    postUserLogin: build.mutation({
+    login: build.mutation({
       query: (body) => ({
         url: '/login',
         method: 'POST',
-        body,
+        body: { user: { ...body } },
         // headers: {
         //   'Custom-Header': 'value',
         // },
@@ -35,7 +35,7 @@ const userApi = createApi({
   }),
 })
 
-export const { usePostUserRegisterMutation, usePostUserLoginMutation } = userApi
+export const { useRegisterMutation, useLoginMutation } = userApi
 
 export default userApi
 
