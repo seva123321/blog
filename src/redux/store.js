@@ -2,17 +2,37 @@
 /* eslint-disable implicit-arrow-linebreak */
 import { configureStore } from '@reduxjs/toolkit'
 
-import articleApi from './articleApi'
+import Encryption from '@/services/encryption'
+
 import userApi from './userApi'
+import articleApi from './articleApi'
+import userReducer from './userSlice'
 import articleReducer from './articleSlice'
 
-export const store = configureStore({
-  reducer: {
-    article: articleReducer,
-    [articleApi.reducerPath]: articleApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(articleApi.middleware, userApi.middleware),
-  devTools: true,
-})
+export const createStore = async () => {
+  let preloadedState = {}
+  try {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      const cryptoService = new Encryption()
+      const encrypted = JSON.parse(userData)
+      const decrypted = await cryptoService.decrypt(encrypted)
+      preloadedState = { user: decrypted }
+    }
+  } catch (error) {
+    localStorage.removeItem('user')
+  }
+
+  return configureStore({
+    reducer: {
+      user: userReducer,
+      article: articleReducer,
+      [userApi.reducerPath]: userApi.reducer,
+      [articleApi.reducerPath]: articleApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(articleApi.middleware, userApi.middleware),
+    devTools: true,
+    preloadedState,
+  })
+}

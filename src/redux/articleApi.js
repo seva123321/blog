@@ -10,6 +10,7 @@ const articleApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/articles`,
   }),
+  prepareHeaders: (headers) => headers,
   endpoints: (build) => ({
     // getArticles: build.query({
     //   query: ({ offset = 0, limit = 20 }) => ({
