@@ -13,4 +13,8 @@ export const getDateString = (updatedAt, createdAt) => {
   return createdAtDate
 }
 
+export const getUpperCaseStartedWord = (word) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  word[0].toUpperCase() + word.slice(1).toLowerCase()
+
 export const PAGINATION_LIMIT = 20
