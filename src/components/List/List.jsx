@@ -27,7 +27,7 @@ function List() {
       <ul>
         {data.articles.map((item) => (
           <li className="mb-6" key={item.slug}>
-            <Item item={item} isShadow />
+            <Item item={item} isPart />
           </li>
         ))}
       </ul>
