@@ -54,6 +54,7 @@ function SignUpForm() {
           type="text"
           label="Username"
           autoComplete="username"
+          containerClass="mb-4"
           error={
             serverErrors?.data.errors?.username || errors.username?.message
           }
@@ -64,6 +65,7 @@ function SignUpForm() {
           type="email"
           label="Email address"
           autoComplete="email"
+          containerClass="mb-4"
           {...register('email')}
           error={serverErrors?.data.errors?.email || errors.email?.message}
         />
@@ -72,6 +74,7 @@ function SignUpForm() {
           type="password"
           label="Password"
           autoComplete="new-password"
+          containerClass="mb-4"
           {...register('password')}
           error={
             serverErrors?.data.errors?.password || errors.password?.message
@@ -82,6 +85,7 @@ function SignUpForm() {
           type="password"
           label="Repeat Password"
           autoComplete="new-password"
+          containerClass="mb-4"
           {...register('repeatPassword')}
           error={errors.repeatPassword?.message}
         />
@@ -93,6 +97,7 @@ function SignUpForm() {
           type="checkbox"
           value
           autoComplete="off"
+          containerClass="mb-4"
           label="I agree to the processing of my personal information"
           error={errors.agreement?.message}
         />

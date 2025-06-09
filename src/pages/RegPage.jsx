@@ -11,16 +11,28 @@ function RegPage() {
         action=""
       >
         <span className="block text-center text-2xl">Create new account</span>
-        <Input name="username" type="text" autoComplete />
-        <Input name="email" type="email" label="Email address" autoComplete />
-        <Input name="password" type="password" />
-        <Input name="password" type="password" label="Repeat Password" />
+        <Input name="username" type="text" autoComplete containerClass="mb-4" />
+        <Input
+          name="email"
+          type="email"
+          label="Email address"
+          autoComplete
+          containerClass="mb-4"
+        />
+        <Input name="password" type="password" containerClass="mb-4" />
+        <Input
+          name="password"
+          type="password"
+          label="Repeat Password"
+          containerClass="mb-4"
+        />
         <hr className="border-0.5 border-[#BFBFBF]" />
 
         <Input
           name="checkbox"
           type="checkbox"
           label="I agree to the processing of my personal information"
+          containerClass="mb-4"
         />
 
         <button

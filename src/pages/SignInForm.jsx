@@ -60,12 +60,14 @@ function SignInForm() {
           type="email"
           label="Email address"
           autoComplete="email"
+          containerClass="mb-4"
           {...register('email')}
           error={serverErrors?.data.errors?.email || errors.email?.message}
         />
         <Input
           type="password"
           autoComplete="password"
+          containerClass="mb-4"
           error={
             serverErrors?.data.errors?.password || errors.password?.message
           }

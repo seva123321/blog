@@ -8,13 +8,20 @@ function ProfileForm() {
         action=""
       >
         <span className="block text-center text-2xl">Edit Profile</span>
-        <Input name="username" type="text" autoComplete />
-        <Input name="email" type="email" label="Email address" autoComplete />
-        <Input name="New password" type="password" />
+        <Input name="username" type="text" autoComplete containerClass="mb-4" />
+        <Input
+          name="email"
+          type="email"
+          label="Email address"
+          autoComplete
+          containerClass="mb-4"
+        />
+        <Input name="New password" type="password" containerClass="mb-4" />
         <Input
           name="Avatar image (url)"
           type="text"
           label="Avatar image (url)"
+          containerClass="mb-4"
         />
 
         <button

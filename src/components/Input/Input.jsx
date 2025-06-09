@@ -9,6 +9,7 @@ const Input = forwardRef(
       type = 'text',
       label = '',
       error = '',
+      useLabel = true,
       containerClass = '',
       ...props
     },
@@ -19,9 +20,9 @@ const Input = forwardRef(
 
     return (
       <div
-        className={`mb-4 ${containerClass} ${isCheckboxOrRadio ? 'flex items-center justify-end gap-3' : 'flex flex-col'}`}
+        className={`${containerClass} ${isCheckboxOrRadio ? 'flex items-center justify-end gap-3' : 'flex flex-col'}`}
       >
-        {!isCheckboxOrRadio && (
+        {!isCheckboxOrRadio && useLabel && (
           <label
             htmlFor={name}
             className="mb-1 text-sm font-medium text-gray-700"
