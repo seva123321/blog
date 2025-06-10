@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import { PAGINATION_LIMIT } from '@/services/utils'
+import Encryption from '@/services/encryption'
 
 import BASE_URL from '../config'
 
@@ -9,8 +10,27 @@ const articleApi = createApi({
   reducerPath: 'articleApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/articles`,
+    prepareHeaders: async (headers) => {
+      const userData = localStorage.getItem('user')
+      if (!userData) return headers
+
+      try {
+        const cryptoService = new Encryption()
+        const userDecrypted = await cryptoService.decrypt(JSON.parse(userData))
+        headers.set('Content-Type', 'application/json')
+
+        // Проверьте структуру userDecrypted - возможно нужно userDecrypted.token
+        if (userDecrypted?.token) {
+          headers.set('Authorization', `Token ${userDecrypted.token}`)
+        }
+
+        return headers
+      } catch (error) {
+        return headers
+      }
+    },
   }),
-  prepareHeaders: (headers) => headers,
+  // prepareHeaders: (headers) => headers,
   endpoints: (build) => ({
     // getArticles: build.query({
     //   query: ({ offset = 0, limit = 20 }) => ({
@@ -62,12 +82,15 @@ const articleApi = createApi({
       query: (body) => ({
         url: '',
         method: 'POST',
-        body,
+        body: { article: { ...body } },
       }),
-      invalidatesTags: (result, error, slug) => [
-        { type: 'Articles', slug },
-        { type: 'Articles', slug: 'PARTIAL-LIST' },
-      ],
+    }),
+    updateArticle: build.mutation({
+      query: ({ body, slug }) => ({
+        url: `/${slug}`,
+        method: 'PUT',
+        body: { article: { ...body } },
+      }),
     }),
   }),
 })
@@ -75,6 +98,7 @@ export const {
   useGetArticlesQuery,
   useGetArticleBySlugQuery,
   usePostArticleMutation,
+  useUpdateArticleMutation,
   useLazyGetArticlesQuery,
   useGetArticlesOffsetQuery,
 } = articleApi
