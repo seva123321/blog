@@ -46,3 +46,9 @@ export const SignInSchema = yup.object().shape({
     .min(6, 'Minimum 6 characters required')
     .max(40, 'Maximum length is 40 characters'),
 })
+
+export const EditFormSchema = yup.object().shape({
+  title: yup.string().required('This field is required!'),
+  description: yup.string().required('This field is required!'),
+  body: yup.string().required('This field is required!'),
+})

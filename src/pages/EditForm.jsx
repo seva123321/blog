@@ -1,21 +1,44 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import Input from '@/components/Input'
-import { SignInSchema } from '@/services/validationSchemas'
+import { EditFormSchema } from '@/services/validationSchemas'
 import TextArea from '@/components/TextArea'
 
-function EditForm() {
+function EditForm({ header, article = {}, onSubmit }) {
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(SignInSchema) })
-  // const [serverErrors, setServerErrors] = useState(null)
-  const [tags, setTags] = useState([])
-  const submitForm = async () => {
-    // Ваша логика отправки формы
+  } = useForm({ resolver: yupResolver(EditFormSchema) })
+  const [tags, setTags] = useState(
+    article.tagList?.map((tag) => ({ id: tag, value: tag })) || [],
+  )
+
+  useEffect(() => {
+    if (article) {
+      reset({
+        title: article.title || '',
+        description: article.description || '',
+        body: article.body || '',
+      })
+    }
+  }, [article, reset])
+
+  const submitForm = async (data) => {
+    const sendData = { ...data }
+
+    if (tags.length) {
+      sendData.tagList = tags.map((tag) => tag.value)
+    }
+
+    await onSubmit(sendData)
+    if (header.includes('Create')) {
+      reset({})
+      setTags([])
+    }
   }
 
   const handleAddTag = () => {
@@ -35,12 +58,13 @@ function EditForm() {
       className="mx-auto max-w-5xl space-y-4 bg-white px-8 py-12 shadow-2xl"
       onSubmit={handleSubmit(submitForm)}
     >
-      <span className="block text-center text-2xl">Create new article</span>
+      <span className="block text-center text-2xl">{header}</span>
       <Input
         type="text"
         label="Title"
         autoComplete="title"
         containerClass="mb-4"
+        error={errors.title?.message}
         {...register('title')}
       />
       <Input
@@ -49,7 +73,6 @@ function EditForm() {
         autoComplete="description"
         containerClass="mb-4"
         error={errors.description?.message}
-        // error={serverErrors?.data.errors?.password || errors.password?.message}
         {...register('description')}
       />
 
@@ -57,7 +80,7 @@ function EditForm() {
         label="Text"
         id="article"
         error={errors.text?.message}
-        {...register('text')}
+        {...register('body')}
       />
 
       <div className="flex">
@@ -74,8 +97,8 @@ function EditForm() {
                   autoComplete="off"
                   useLabel={!index}
                   value={tag.value}
-                  {...register(`Tag ${index + 1}`)}
-                  onChange={(e) => handleTagChange(index, e.target.value)}
+                  name={`Tag ${index + 1}`}
+                  onChange={(e) => handleTagChange(tag.id, e.target.value)}
                   error={errors.tags?.message}
                 />
               </div>
