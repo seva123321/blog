@@ -6,7 +6,7 @@ import AvaComponent from '@/components/AvaComponent'
 import { getDateString } from '@/services/utils'
 import ROUTES from '@/services/routes'
 
-function Item({ item, isPart = false, isAuth = false }) {
+function Item({ item, isPart = false, isAuth = false, isSameUser = false }) {
   const {
     slug,
     author,
@@ -29,12 +29,18 @@ function Item({ item, isPart = false, isAuth = false }) {
     >
       <div className="mb-4 sm:mr-4 sm:mb-0 sm:flex-1">
         <div className="flex items-center sm:flex-row">
-          <Link
-            to={`${ROUTES.ARTICLES}/${slug}`}
-            className="mb-2 text-xl font-semibold text-blue-600 sm:mb-0 sm:text-2xl"
-          >
-            {title}
-          </Link>
+          {isPart ? (
+            <Link
+              to={`${ROUTES.ARTICLES}/${slug}`}
+              className="mb-2 text-xl font-semibold text-blue-600 sm:mb-0 sm:text-2xl"
+            >
+              {title}
+            </Link>
+          ) : (
+            <h1 className="mb-2 text-xl font-semibold text-blue-600 sm:mb-0 sm:text-2xl">
+              {title}
+            </h1>
+          )}
           <div className="mb-3 ml-1 flex sm:mb-0 sm:ml-3">
             <img className="w-4" src="/icons/heart.svg" alt="likes" />
             <span className="ml-1 text-gray-600">{favoritesCount}</span>
@@ -52,7 +58,7 @@ function Item({ item, isPart = false, isAuth = false }) {
             urlImg={author.image}
           />
         </div>
-        {isAuth && (
+        {isAuth && isSameUser && (
           <div>
             <button
               type="button"
