@@ -1,15 +1,22 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 import { useGetArticleBySlugQuery } from '@/redux/articleApi'
 import { useUpdateArticleMutation } from '@/redux'
+import ROUTES from '@/services/routes'
 
 import EditForm from './EditForm'
 
 function EditPage() {
   const { slug } = useParams()
+  const navigate = useNavigate()
+
   const { data = {}, isLoading, isError } = useGetArticleBySlugQuery(slug)
   const [updateArticle] = useUpdateArticleMutation(slug)
+
+  const token = useSelector((state) => state.user.token)
+
   const handleSubmit = async (sendData) => {
     try {
       await updateArticle({ body: sendData, slug }).unwrap()
@@ -23,7 +30,9 @@ function EditPage() {
       }
     }
   }
-
+  if (!token) {
+    navigate(ROUTES.SIGN_IN)
+  }
   if (isLoading) {
     return <h1>Loading...</h1>
   }

@@ -1,11 +1,16 @@
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 
 import { usePostArticleMutation } from '@/redux'
+import ROUTES from '@/services/routes'
 
 import EditForm from './EditForm'
 
 function CreatePage() {
   const [postArticle] = usePostArticleMutation()
+  const navigate = useNavigate()
+  const token = useSelector((state) => state.user.token)
   const handleSubmit = async (sendData) => {
     try {
       await postArticle(sendData).unwrap() // CREATE
@@ -19,6 +24,10 @@ function CreatePage() {
       }
     }
   }
+  if (!token) {
+    navigate(ROUTES.SIGN_IN)
+  }
+
   return (
     <div>
       <EditForm header="Create new article" onSubmit={handleSubmit} />

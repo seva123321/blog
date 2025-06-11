@@ -6,7 +6,7 @@ import Input from '@/components/Input'
 import { EditFormSchema } from '@/services/validationSchemas'
 import TextArea from '@/components/TextArea'
 
-function EditForm({ header, article = {}, onSubmit }) {
+function EditForm({ header, article = null, onSubmit }) {
   const {
     reset,
     register,
@@ -14,7 +14,7 @@ function EditForm({ header, article = {}, onSubmit }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(EditFormSchema) })
   const [tags, setTags] = useState(
-    article.tagList?.map((tag) => ({ id: tag, value: tag })) || [],
+    article?.tagList?.map((tag) => ({ id: tag, value: tag })) || [],
   )
 
   useEffect(() => {
