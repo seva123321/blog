@@ -11,7 +11,7 @@ function Tags({ tagList = [] }) {
       {visibleTags.map((item, index) => (
         <span
           key={`${item}-${index}`}
-          className="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:border-blue-400 hover:text-blue-600"
+          className="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700"
         >
           {item}
         </span>
@@ -20,7 +20,7 @@ function Tags({ tagList = [] }) {
         <button
           type="button"
           onClick={() => setShowAll(true)}
-          className="text-xs text-gray-500 hover:text-blue-600"
+          className="text-xs text-gray-500"
         >
           {`+${hiddenTagsCount} more`}
         </button>
