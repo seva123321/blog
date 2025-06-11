@@ -1,66 +1,51 @@
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useState, useCallback } from 'react'
 
-import AvaComponent from '@/components/AvaComponent'
 import ROUTES from '@/services/routes'
-import { clearUser } from '@/redux'
+import NavBlock from '@/components/NavBlock'
 
 function Header() {
-  const { username, image, token } = useSelector((state) => state.user)
-  const dispatch = useDispatch()
-  const isAuthenticated = !!token
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen((prev) => !prev)
+  }, [])
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-10 mb-6 flex h-20 items-center justify-between bg-white px-6 text-[18px] shadow">
+    <header className="fixed top-0 right-0 left-0 z-50 mb-6 flex h-16 items-center justify-between bg-white px-4 text-lg shadow sm:h-20 sm:px-6">
+      {/* Логотип */}
       <Link
         to={ROUTES.HOME}
-        className="transition-transform duration-300 hover:scale-110"
+        className="text-xl font-bold transition-transform duration-300 hover:scale-110 sm:text-2xl"
       >
         Realworld Blog
       </Link>
 
-      <div className="flex items-center gap-7">
-        {isAuthenticated ? (
-          <>
-            <div className="">
-              <Link
-                to={ROUTES.CREATE_ARTICLE}
-                className="cursor-pointer rounded-md border-2 border-[#52C41A] px-3 py-1.5 whitespace-nowrap text-[#52C41A] transition-colors duration-300 hover:bg-[#53c41a2d]"
-              >
-                Create article
-              </Link>
-            </div>
-            <Link to={ROUTES.PROFILE}>
-              <AvaComponent
-                username={username}
-                urlImg={image || '/icons/FallbackAvatar.png'}
-              />
-            </Link>
-            <button
-              type="button"
-              className="cursor-pointer rounded-md border-2 border-black px-4 py-2.5 whitespace-nowrap text-black transition-colors duration-300 hover:bg-[#4d504c2d]"
-              onClick={() => dispatch(clearUser())}
-            >
-              Log Out
-            </button>
-          </>
-        ) : (
-          <div className="">
-            <Link
-              to={ROUTES.SIGN_IN}
-              className="cursor-pointer rounded-md px-4 py-2.5 whitespace-nowrap text-black transition-colors duration-300 hover:bg-[#4d504c2d]"
-            >
-              Sign In
-            </Link>
-            <Link
-              to={ROUTES.SIGN_UP}
-              className="cursor-pointer rounded-md border-2 border-[#52C41A] px-4 py-2.5 whitespace-nowrap text-[#52C41A] transition-colors duration-300 hover:bg-[#53c41a2d]"
-            >
-              Sign Up
-            </Link>
-          </div>
-        )}
-      </div>
+      {/* Кнопка меню для мобильных */}
+      <button
+        type="button"
+        className="block sm:hidden"
+        onClick={toggleMobileMenu}
+        aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+      >
+        <div className="cursor-pointer rounded border border-black px-2 text-2xl transition-transform duration-300 hover:scale-110">
+          {mobileMenuOpen ? '×' : '≡'}
+        </div>
+      </button>
+
+      {/* Навигация (десктоп) */}
+      <nav className="hidden items-center gap-4 sm:flex sm:gap-7">
+        <NavBlock setMobileMenuOpen={setMobileMenuOpen} />
+      </nav>
+
+      {/* Мобильное меню */}
+      {mobileMenuOpen && (
+        <div className="absolute top-16 left-0 w-full bg-white py-4 shadow-lg sm:hidden">
+          <nav className="flex flex-col items-center gap-4">
+            <NavBlock isMobile setMobileMenuOpen={setMobileMenuOpen} />
+          </nav>
+        </div>
+      )}
     </header>
   )
 }
