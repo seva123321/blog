@@ -28,17 +28,19 @@ function EditForm({ header, article = null, onSubmit }) {
   }, [article, reset])
 
   const submitForm = async (data) => {
-    const sendData = { ...data }
-
-    if (tags.length) {
-      sendData.tagList = tags.map((tag) => tag.value)
+    const sendData = {
+      ...data,
+      ...(tags.length > 0 && {
+        tagList: tags.map((tag) => tag.value.trim()).filter((tag) => tag),
+      }),
     }
 
-    await onSubmit(sendData)
-    if (header.includes('Create')) {
-      reset({})
-      setTags([])
-    }
+    await onSubmit(sendData).then(() => {
+      if (header.includes('Create')) {
+        reset({})
+        setTags([])
+      }
+    })
   }
 
   const handleAddTag = () => {
