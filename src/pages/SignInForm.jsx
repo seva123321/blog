@@ -12,7 +12,6 @@ import { useLoginMutation, saveUser } from '@/redux'
 
 function SignInForm() {
   const {
-    // reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -21,16 +20,12 @@ function SignInForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loginUser, { isError, error }] = useLoginMutation()
-  // const location = useLocation()
-  // console.log('location > ', location)
-  // const fromPage = location.state.from || '/'
 
   const submitForm = async (data) => {
     try {
       const result = await loginUser(data).unwrap()
       if (isError) {
         setServerErrors(result.error)
-        // return
       }
       if (error) {
         toast.error(error.data.errors)
@@ -44,7 +39,6 @@ function SignInForm() {
     } catch (err) {
       const message = Object.entries(err.data.errors)
       toast.error(`Ошибка: ${message.join('')}`)
-      // toast.error(`Ошибка: ${err.data.errors}`)
     }
   }
 

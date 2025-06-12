@@ -25,18 +25,3 @@ const RequireAuth = ({ children }) => {
 }
 
 export default RequireAuth
-// import { useDispatch } from 'react-redux'
-
-// import { setUser } from '@/redux'
-
-// const RequireAuth = ({ children }) => {
-
-//   const dispatch = useDispatch()
-//   const userData = sessionStorage.getItem('userData')
-
-//   if (userData) dispatch(setUser(userData))
-
-//   return children
-// }
-
-// export default RequireAuth

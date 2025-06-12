@@ -17,8 +17,6 @@ const articleSlice = createSlice({
       state.articles = [...state.articles, ...articles]
       state.articlesCount = articlesCount
     },
-
-    // addArticles() {},
   },
 })
 

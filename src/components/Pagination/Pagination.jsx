@@ -58,7 +58,6 @@ function Pagination({ currentPage, onPageChange, totalPages }) {
             currentPage === i ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
           }`}
           aria-label={`Page ${i}`}
-          //   aria-current={currentPage === i ? 'page' : undefined}
         >
           {i}
         </button>,

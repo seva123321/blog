@@ -1,11 +1,9 @@
 import * as yup from 'yup'
 
 const RegExpEmail = /(^[a-z][a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
-// const RegExpEmail = /^\S+@\S+\.\S+$/
 const RegExpUser = /^[a-z][a-z0-9]*$/
 
 export const SignUpSchema = yup.object().shape({
-  // 'You can only use lowercase English letters and numbers',
   username: yup
     .string()
     .trim()

@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom'
 
 import ArticlesPage from '@/pages/ArticlesPage'
 import OneArticlePage from '@/pages/OneArticlePage'
-// import RegPage from '@/pages/RegPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import Layout from '@/models/Layout'
 import ROUTES from '@/services/routes'
