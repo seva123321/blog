@@ -7,7 +7,6 @@ const ROUTES = {
   ARTICLE_EDIT: '/articles/:slug/edit',
   CREATE_ARTICLE: '/new-article',
   PROFILE: '/profile',
-  // EDIT_ARTICLE: '/edit_article/:slug?',
 }
 
 export default ROUTES
