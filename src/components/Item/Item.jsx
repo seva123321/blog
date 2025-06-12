@@ -64,6 +64,7 @@ function Item({
           )}
           <Like
             slug={slug}
+            isAuth={isAuth}
             favorited={favorited}
             favoritesCount={favoritesCount}
           />

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { useGetArticlesQuery } from '@/redux/articleApi'
 import Item from '@/components/Item'
@@ -12,6 +13,7 @@ function List() {
     isLoading,
     isError,
   } = useGetArticlesQuery({ offset: (page - 1) * PAGINATION_LIMIT })
+  const token = useSelector((state) => state.user.token)
 
   if (isLoading) {
     return <h1>Loading...</h1>
@@ -27,7 +29,7 @@ function List() {
       <ul>
         {data.articles.map((item) => (
           <li className="mb-6" key={item.slug}>
-            <Item item={item} isPart />
+            <Item item={item} isPart isAuth={!!token} />
           </li>
         ))}
       </ul>

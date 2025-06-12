@@ -1,18 +1,21 @@
 /* eslint-disable no-unused-expressions */
 import { memo } from 'react'
-import { useSelector } from 'react-redux'
 
 import { useLikedArticleMutation, useUnLikedArticleMutation } from '@/redux'
 
-function Like({ slug, favorited, favoritesCount }) {
+function Like({
+  slug = '',
+  isAuth = false,
+  favorited = false,
+  favoritesCount = 0,
+}) {
   const [likedArticle] = useLikedArticleMutation()
   const [unLikedArticle] = useUnLikedArticleMutation()
-  const token = useSelector((state) => state.user.token)
 
-  const isAbilityLike = favorited && token
+  const isAbilityLike = favorited && isAuth
 
   const handleLickedArticle = async () => {
-    if (token) {
+    if (isAuth) {
       favorited
         ? await unLikedArticle(slug).unwrap()
         : await likedArticle(slug).unwrap()
