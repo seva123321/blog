@@ -5,6 +5,7 @@ import Tags from '@/components/Tags'
 import AvaComponent from '@/components/AvaComponent'
 import { getDateString } from '@/services/utils'
 import ROUTES from '@/services/routes'
+import Like from '@/components/Like'
 
 function Item({
   item,
@@ -22,6 +23,7 @@ function Item({
     createdAt,
     description,
     favoritesCount,
+    favorited,
     tagList,
     title,
     updatedAt,
@@ -60,10 +62,11 @@ function Item({
               {title}
             </h1>
           )}
-          <div className="mb-3 ml-1 flex sm:mb-0 sm:ml-3">
-            <img className="w-4" src="/icons/heart.svg" alt="likes" />
-            <span className="ml-1 text-gray-600">{favoritesCount}</span>
-          </div>
+          <Like
+            slug={slug}
+            favorited={favorited}
+            favoritesCount={favoritesCount}
+          />
         </div>
 
         <Tags tagList={tagListFiltered} />
@@ -98,7 +101,6 @@ function Item({
                   </button>
                   <button
                     type="button"
-                    // type="submit"
                     onClick={handleDelete}
                     disabled={isDeleting}
                     className="cursor-pointer rounded-md border bg-[#1890FF] px-3 py-1 text-white hover:bg-[#025bae]"
