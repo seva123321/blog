@@ -1,55 +1,66 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+import Encryption from '@/services/encryption'
+
 import BASE_URL from '../config'
 
 const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/users`,
-    prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json')
-      return headers
+    baseUrl: `${BASE_URL}`,
+    prepareHeaders: async (headers) => {
+      const userData = localStorage.getItem('user')
+      if (!userData) return headers
+
+      try {
+        const cryptoService = new Encryption()
+        const userDecrypted = await cryptoService.decrypt(JSON.parse(userData))
+        headers.set('Content-Type', 'application/json')
+
+        if (userDecrypted?.token) {
+          headers.set('Authorization', `Token ${userDecrypted.token}`)
+        }
+
+        return headers
+      } catch (error) {
+        return headers
+      }
     },
   }),
   endpoints: (build) => ({
     register: build.mutation({
       query: (body) => ({
-        url: '',
+        url: '/users',
         method: 'POST',
         body: { user: { ...body } },
-        // headers: {
-        //   'Custom-Header': 'value',
-        // },
       }),
     }),
     login: build.mutation({
       query: (body) => ({
-        url: '/login',
+        url: '/users/login',
         method: 'POST',
         body: { user: { ...body } },
-        // headers: {
-        //   'Custom-Header': 'value',
-        // },
       }),
+    }),
+    getUser: build.query({
+      query: () => '/user',
+    }),
+    updateUser: build.mutation({
+      query: (body) => ({
+        url: '/user',
+        method: 'PUT',
+        body: { user: { ...body } },
+      }),
+      invalidatesTags: ['Profile'],
     }),
   }),
 })
 
-export const { useRegisterMutation, useLoginMutation } = userApi
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
+} = userApi
 
 export default userApi
-
-// возврат данных postUserRegister
-
-// {
-//     "data": {
-//         "user": {
-//             "username": "wwerty",
-//             "email": "qdd@mail.ru",
-//             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-// eyJpZCI6IjY4NDA3OTBkNWVmZjZlMWIwMGQyNzc5NSIsIn
-// VzZXJuYW1lIjoid3dlcnR5IiwiZXhwIjoxNzU0MjM5NzU3LCJpYXQiOjE3NDkwNTU3NTd9.
-// dB0CtQuHkhi3HS3bbNg69SVqHngOYapXNepk1ngnsLA"
-//         }
-//     }
-// }

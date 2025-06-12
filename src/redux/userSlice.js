@@ -52,4 +52,27 @@ export const saveUser = (userData) => async (dispatch) => {
   }
 }
 
+export const loadUser = () => async (dispatch) => {
+  try {
+    dispatch(setLoading(true))
+    const userData = localStorage.getItem('user')
+
+    if (!userData) {
+      dispatch(clearUser())
+      return
+    }
+
+    const cryptoService = new Encryption()
+    const decrypted = await cryptoService.decrypt(JSON.parse(userData))
+
+    dispatch(setUser(decrypted))
+  } catch (error) {
+    dispatch(setError(error.message))
+    // В случае ошибки дешифровки очищаем невалидные данные
+    dispatch(clearUser())
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export default userSlice.reducer
