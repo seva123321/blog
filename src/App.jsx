@@ -1,15 +1,17 @@
+import { lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import ArticlesPage from '@/pages/ArticlesPage'
 import OneArticlePage from '@/pages/OneArticlePage'
-import NotFoundPage from '@/pages/NotFoundPage'
 import Layout from '@/models/Layout'
 import ROUTES from '@/services/routes'
-import SignUpForm from '@/pages/SignUpForm'
-import SignInForm from '@/pages/SignInForm'
-import ProfileForm from '@/pages/ProfileForm'
-import EditPage from '@/pages/EditPage'
-import CreatePage from '@/pages/CreatePage'
+
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
+const SignUpForm = lazy(() => import('@/pages/SignUpForm'))
+const SignInForm = lazy(() => import('@/pages/SignInForm'))
+const ProfileForm = lazy(() => import('@/pages/ProfileForm'))
+const EditPage = lazy(() => import('@/pages/EditPage'))
+const CreatePage = lazy(() => import('@/pages/CreatePage'))
 
 function App() {
   return (
