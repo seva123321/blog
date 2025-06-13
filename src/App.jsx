@@ -12,6 +12,7 @@ const SignInForm = lazy(() => import('@/pages/SignInForm'))
 const ProfileForm = lazy(() => import('@/pages/ProfileForm'))
 const EditPage = lazy(() => import('@/pages/EditPage'))
 const CreatePage = lazy(() => import('@/pages/CreatePage'))
+const GoBackProvider = lazy(() => import('@/hoc/GoBackProvider'))
 
 function App() {
   return (
@@ -20,11 +21,46 @@ function App() {
         <Route index element={<ArticlesPage />} />
         <Route path={ROUTES.ARTICLES} element={<ArticlesPage />} />
         <Route path={ROUTES.ARTICLE} element={<OneArticlePage />} />
-        <Route path={ROUTES.ARTICLE_EDIT} element={<EditPage />} />
-        <Route path={ROUTES.SIGN_UP} element={<SignUpForm />} />
-        <Route path={ROUTES.SIGN_IN} element={<SignInForm />} />
-        <Route path={ROUTES.PROFILE} element={<ProfileForm />} />
-        <Route path={ROUTES.CREATE_ARTICLE} element={<CreatePage />} />
+        <Route
+          path={ROUTES.ARTICLE_EDIT}
+          element={
+            <GoBackProvider>
+              <EditPage />
+            </GoBackProvider>
+          }
+        />
+        <Route
+          path={ROUTES.SIGN_UP}
+          element={
+            <GoBackProvider>
+              <SignUpForm />
+            </GoBackProvider>
+          }
+        />
+        <Route
+          path={ROUTES.SIGN_IN}
+          element={
+            <GoBackProvider>
+              <SignInForm />
+            </GoBackProvider>
+          }
+        />
+        <Route
+          path={ROUTES.PROFILE}
+          element={
+            <GoBackProvider>
+              <ProfileForm />
+            </GoBackProvider>
+          }
+        />
+        <Route
+          path={ROUTES.CREATE_ARTICLE}
+          element={
+            <GoBackProvider>
+              <CreatePage />
+            </GoBackProvider>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

@@ -27,7 +27,7 @@ function List() {
   }
 
   return (
-    <section>
+    <section className="scroll-smooth">
       <ul>
         {data.articles.map((item) => (
           <li className="mb-6" key={item.slug}>
