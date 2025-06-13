@@ -30,7 +30,7 @@ export const createStore = async () => {
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(articleApi.middleware, userApi.middleware),
-    devTools: true,
+    devTools: import.meta.env.VITE_MODE !== 'production',
     preloadedState,
   })
 }
