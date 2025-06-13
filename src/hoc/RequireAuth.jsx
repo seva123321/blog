@@ -1,25 +1,15 @@
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import { setUser } from '@/redux'
+import ROUTES from '@/services/routes'
 
 const RequireAuth = ({ children }) => {
-  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const token = useSelector((state) => state.user.token)
 
-  useEffect(() => {
-    const savedToken = sessionStorage.getItem('authToken')
-    const savedUsername = sessionStorage.getItem('username')
-    const savedImage = sessionStorage.getItem('image')
-    if (savedToken) {
-      dispatch(
-        setUser({
-          token: savedToken,
-          username: savedUsername,
-          image: savedImage,
-        }),
-      )
-    }
-  }, [dispatch])
+  if (!token) {
+    navigate(ROUTES.SIGN_IN)
+  }
 
   return children
 }

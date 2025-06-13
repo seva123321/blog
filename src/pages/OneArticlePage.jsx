@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { useSelector } from 'react-redux'
 import { toast, ToastContainer } from 'react-toastify'
+import { useCallback } from 'react'
 
 import ROUTES from '@/services/routes'
 import {
@@ -18,20 +19,23 @@ function OneArticlePage() {
   const { data = {}, isLoading, isError } = useGetArticleBySlugQuery(slug)
   const [deleteArticle] = useDeleteArticleMutation()
 
-  const handleArticleDelete = async (slugData) => {
-    try {
-      await deleteArticle(slugData).unwrap()
-      toast.success('Article updated successfully!')
-      navigate(ROUTES.ARTICLES, { replace: true })
-    } catch (err) {
-      if (err.data?.errors) {
-        const { error, message } = err.data.errors
-        toast.error(`${error.name || 'Error'}: ${message}`)
-      } else {
-        toast.error('An unknown error occurred')
+  const handleArticleDelete = useCallback(
+    async (slugData) => {
+      try {
+        await deleteArticle(slugData).unwrap()
+        toast.success('Article updated successfully!')
+        navigate(ROUTES.ARTICLES, { replace: true })
+      } catch (err) {
+        if (err.data?.errors) {
+          const { error, message } = err.data.errors
+          toast.error(`${error.name || 'Error'}: ${message}`)
+        } else {
+          toast.error('An unknown error occurred')
+        }
       }
-    }
-  }
+    },
+    [navigate, deleteArticle],
+  )
 
   if (isLoading) {
     return <h1>Loading...</h1>
