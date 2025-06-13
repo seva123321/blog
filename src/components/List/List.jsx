@@ -16,13 +16,15 @@ function List() {
   const token = useSelector((state) => state.user.token)
 
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <h1 className="text-center">Loading...</h1>
   }
   if (isError) {
-    return <h1>Error Loading!</h1>
+    return <h1 className="text-center">Error Loading!</h1>
   }
 
-  if (!data.articles.length) return <h1>No articles found</h1>
+  if (!data.articles.length) {
+    return <h1 className="text-center">No articles found</h1>
+  }
 
   return (
     <section>
