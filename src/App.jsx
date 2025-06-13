@@ -20,7 +20,14 @@ function App() {
       <Route path={ROUTES.HOME} element={<Layout />}>
         <Route index element={<ArticlesPage />} />
         <Route path={ROUTES.ARTICLES} element={<ArticlesPage />} />
-        <Route path={ROUTES.ARTICLE} element={<OneArticlePage />} />
+        <Route
+          path={ROUTES.ARTICLE}
+          element={
+            <GoBackProvider>
+              <OneArticlePage />
+            </GoBackProvider>
+          }
+        />
         <Route
           path={ROUTES.ARTICLE_EDIT}
           element={

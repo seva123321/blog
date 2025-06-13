@@ -50,13 +50,6 @@ function OneArticlePage() {
 
   return (
     <div className="mb-6 block">
-      <button
-        type="button"
-        className="mb-2 cursor-pointer text-[#1890FF] transition-transform duration-300 hover:scale-110"
-        onClick={() => navigate(-1)}
-      >
-        &#8678; НАЗАД
-      </button>
       <div className="mb-20 bg-white shadow">
         <Item
           item={article}
