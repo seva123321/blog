@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useMemo, useState } from 'react'
+import { lazy, memo, useMemo, useState } from 'react'
 
 import Tags from '@/components/Tags'
 import AvaComponent from '@/components/AvaComponent'
@@ -7,15 +7,16 @@ import { getDateString } from '@/services/utils'
 import ROUTES from '@/services/routes'
 import Like from '@/components/Like'
 
+const Confirm = lazy(() => import('@/components/Confirm'))
+
 function Item({
   item,
   isPart = false,
   isAuth = false,
   isSameUser = false,
-  onDelete = {},
+  onDelete = () => {},
 }) {
   const [showConfirm, setShowConfirm] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
 
   const {
     slug,
@@ -33,16 +34,6 @@ function Item({
     () => tagList.filter((t) => String(t).trim() !== ''),
     [tagList],
   )
-
-  const handleDelete = async () => {
-    setIsDeleting(true)
-    try {
-      await onDelete(slug)
-    } finally {
-      setIsDeleting(false)
-      setShowConfirm(false)
-    }
-  }
 
   return (
     <div
@@ -84,32 +75,11 @@ function Item({
         {isAuth && isSameUser && (
           <div>
             {showConfirm && (
-              <div className="absolute top-2 right-4 z-10 rounded-md bg-white p-4 shadow-xl">
-                <div className="align-center flex">
-                  <span className="mr-1 h-6 w-6 rounded-full bg-amber-600 text-center text-white">
-                    !
-                  </span>
-                  <p className="mb-3">Are you sure to delete this article?</p>
-                </div>
-
-                <div className="flex justify-end space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm(false)}
-                    className="cursor-pointer rounded-md border px-3 py-1 text-gray-600 hover:bg-gray-100"
-                  >
-                    No
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    disabled={isDeleting}
-                    className="cursor-pointer rounded-md border bg-[#1890FF] px-3 py-1 text-white hover:bg-[#025bae]"
-                  >
-                    {isDeleting ? 'Deleting...' : 'Yes'}
-                  </button>
-                </div>
-              </div>
+              <Confirm
+                slug={slug}
+                onDelete={onDelete}
+                setShowConfirm={setShowConfirm}
+              />
             )}
             <button
               type="button"
@@ -132,4 +102,4 @@ function Item({
   )
 }
 
-export default Item
+export default memo(Item)
