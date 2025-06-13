@@ -17,9 +17,9 @@ function ProfileFormWrapper() {
   if (!token) {
     navigate(ROUTES.SIGN_IN)
   }
-  if (isLoading) return <h1>Loading...</h1>
-  if (isError) return <h1>Error Loading!</h1>
-  if (!data?.user) return <h1>No user data</h1>
+  if (isLoading) return <h1 className="text-center">Loading...</h1>
+  if (isError) return <h1 className="text-center">Error Loading!</h1>
+  if (!data?.user) return <h1 className="text-center">No user data</h1>
 
   return <ProfileFormWithData initialData={data.user} />
 }

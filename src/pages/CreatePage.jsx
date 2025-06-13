@@ -4,8 +4,7 @@ import { toast, ToastContainer } from 'react-toastify'
 
 import { usePostArticleMutation } from '@/redux'
 import ROUTES from '@/services/routes'
-
-import EditForm from './EditForm'
+import EditForm from '@/models/EditForm'
 
 function CreatePage() {
   const [postArticle] = usePostArticleMutation()

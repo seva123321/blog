@@ -38,12 +38,12 @@ function OneArticlePage() {
   )
 
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <h1 className="text-center">Loading...</h1>
   }
   if (isError) {
-    return <h1>Error Loading!</h1>
+    return <h1 className="text-center">Error Loading!</h1>
   }
-  if (!data?.article) return <h1>Article not found</h1>
+  if (!data?.article) return <h1 className="text-center">Article not found</h1>
 
   const { article } = data
   const isSameUser = article.author.username === username

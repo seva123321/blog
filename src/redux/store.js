@@ -7,7 +7,6 @@ import Encryption from '@/services/encryption'
 import userApi from './userApi'
 import articleApi from './articleApi'
 import userReducer from './userSlice'
-import articleReducer from './articleSlice'
 
 export const createStore = async () => {
   let preloadedState = {}
@@ -26,7 +25,6 @@ export const createStore = async () => {
   return configureStore({
     reducer: {
       user: userReducer,
-      article: articleReducer,
       [userApi.reducerPath]: userApi.reducer,
       [articleApi.reducerPath]: articleApi.reducer,
     },

@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux'
 import { useGetArticleBySlugQuery } from '@/redux/articleApi'
 import { useUpdateArticleMutation } from '@/redux'
 import ROUTES from '@/services/routes'
-
-import EditForm from './EditForm'
+import EditForm from '@/models/EditForm'
 
 function EditPage() {
   const { slug } = useParams()
@@ -34,12 +33,12 @@ function EditPage() {
     navigate(ROUTES.SIGN_IN)
   }
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <h1 className="text-center">Loading...</h1>
   }
   if (isError) {
-    return <h1>Error Loading!</h1>
+    return <h1 className="text-center">Error Loading!</h1>
   }
-  if (!data?.article) return <h1>Article not found</h1>
+  if (!data?.article) return <h1 className="text-center">Article not found</h1>
 
   return (
     <div>
